@@ -36,6 +36,19 @@ def login():
     access_token = create_access_token(identity=user.id, expires_delta=timedelta(days=1))
     return jsonify(access_token=access_token), 200
 
+# Get All Users
+@controller_bp.route('/users', methods=['GET'])
+@jwt_required()
+def get_users():
+    users = User.query.all()
+    user_list = []
+    for user in users:
+        user_list.append({
+            "id": user.id,
+            "username": user.username
+        })
+    return jsonify(user_list), 200
+
 # Add Expense Category
 @controller_bp.route('/categories', methods=['POST'])
 @jwt_required()
@@ -54,6 +67,21 @@ def add_category():
         "description": new_category.description,
         "image_url": new_category.image_url
     }), 201
+
+# Get All Categories
+@controller_bp.route('/categories', methods=['GET'])
+@jwt_required()
+def get_categories():
+    categories = Category.query.all()
+    category_list = []
+    for category in categories:
+        category_list.append({
+            "id": category.id,
+            "name": category.name,
+            "description": category.description,
+            "image_url": category.image_url
+        })
+    return jsonify(category_list), 200
 
 # Add Expense
 @controller_bp.route('/expenses', methods=['POST'])
@@ -81,21 +109,6 @@ def add_expense():
         "category_image_url": category.image_url,
         "is_deleted": new_expense.is_deleted
     }), 201
-
-# Get All Categories
-@controller_bp.route('/categories', methods=['GET'])
-@jwt_required()
-def get_categories():
-    categories = Category.query.all()
-    category_list = []
-    for category in categories:
-        category_list.append({
-            "id": category.id,
-            "name": category.name,
-            "description": category.description,
-            "image_url": category.image_url
-        })
-    return jsonify(category_list), 200
 
 # Get All Expenses
 @controller_bp.route('/expenses', methods=['GET'])
