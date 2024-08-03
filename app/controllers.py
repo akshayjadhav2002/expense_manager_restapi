@@ -9,6 +9,7 @@ controller_bp = Blueprint('controller', __name__)
 @controller_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
+    name = data.get('name')
     username = data.get('username')
     password = data.get('password')
 
@@ -17,6 +18,7 @@ def register():
 
     new_user = User(username=username)
     new_user.set_password(password)
+    new_user.set_name(name)
     db.session.add(new_user)
     db.session.commit()
 
@@ -34,7 +36,7 @@ def login():
         return jsonify({"error": "Invalid username or password"}), 401
 
     access_token = create_access_token(identity=user.id, expires_delta=timedelta(days=1))
-    return jsonify(access_token=access_token), 200
+    return jsonify(access_token=access_token,name = user.name), 200
 
 # Get All Users
 @controller_bp.route('/users', methods=['GET'])

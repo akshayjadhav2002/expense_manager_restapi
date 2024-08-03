@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100),nullable = False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
 
@@ -12,6 +13,9 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
+    def set_name(self,name):
+        self.name = name
 
 class Category(db.Model):
     __tablename__ = 'categories'
