@@ -28,10 +28,6 @@ def register():
 @controller_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-     # Check if data is present and if username and password are provided
-    if not data or not data.get('username') or not data.get('password'):
-        return jsonify({"error": "Username and password are required"}), 400
-    
     username = data.get('username')
     password = data.get('password')
 
