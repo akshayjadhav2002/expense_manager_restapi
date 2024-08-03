@@ -36,7 +36,7 @@ def login():
         return jsonify({"error": "Invalid username or password"}), 401
 
     access_token = create_access_token(identity=user.id, expires_delta=timedelta(days=1))
-    return jsonify(access_token=access_token,name = user.name), 200
+    return jsonify(access_token=access_token,name = user.username), 200
 
 # Get All Users
 @controller_bp.route('/users', methods=['GET'])
