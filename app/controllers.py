@@ -84,6 +84,24 @@ def get_categories():
             "image_url": category.image_url
         })
     return jsonify(category_list), 200
+# Delete Category
+@controller_bp.route('/categories/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_category(id):
+    category = Category.query.get(id)
+    if category:
+        db.session.delete(category)
+        db.session.commit()
+        return jsonify({
+            "message": "Category deleted successfully",
+            "category": {
+                "id": category.id,
+                "name": category.name,
+                "description": category.description,
+                "image_url": category.image_url
+            }
+        }), 200
+    return jsonify({"error": "Category not found"}), 404
 
 # Add Expense
 @controller_bp.route('/expenses', methods=['POST'])
